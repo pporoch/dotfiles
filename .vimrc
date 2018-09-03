@@ -37,11 +37,11 @@ nmap <C-k> <plug>(caw:i:toggle)
 vmap <C-k> <plug>(caw:i:toggle)
 " 括弧を自動で閉じる
 Plug 'cohama/lexima.vim'
-call lexima#add_rule({'at': '\%#.*[-0-9a-zA-Z_,:]', 'char': '{', 'input': '{'})
-call lexima#add_rule({'at': '\%#\n\s*}', 'char': '}', 'input': '}', 'delete': '}'})
 
 call plug#end()
 
+call lexima#add_rule({'at': '\%#.*[-0-9a-zA-Z_,:]', 'char': '{', 'input': '{'})
+call lexima#add_rule({'at': '\%#\n\s*}', 'char': '}', 'input': '}', 'delete': '}'})
 " filetypeの検出を有効化する => vim-plugでは不要
 " filetype plugin indent on
 
