@@ -31,6 +31,9 @@ Plug 'tpope/vim-fugitive' " vim上でGitを使う
 Plug 'Shougo/deoplete.nvim' " 強力な入力補完
 Plug 'roxma/nvim-yarp' " vim8でdeoplete.nvimを使うのに必要
 Plug 'roxma/vim-hug-neovim-rpc' " vim8でdeoplete.nvimを使うのに必要
+Plug 'Shougo/neco-syntax' " deoplete.nvim用ソースプラグイン
+" [deoplete.nvim用ソースプラグイン一覧](https://github.com/Shougo/deoplete.nvim/wiki/Completion-Sources)
+
 
 call plug#end()
 """"""""""""""""""""""""""""""
