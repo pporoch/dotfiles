@@ -1,172 +1,170 @@
-" 挙動を vi 互換ではなく、Vim のデフォルト設定にする => .vimrcが存在すれば自動的に有効化されるので設定不要
-" set nocompatible
-" 一旦ファイルタイプ関連を無効化する => vim-plugでは不要
-" filetype off
+" Character code
+set encoding=utf-8 " At file reading
+scriptencoding utf-8 " Vim script file using multibyte characters
+
+" 以下、日本語（マルチバイト文字）使用可
+
+" 文字コード
+set fileencoding=utf-8 " 保存時
+set fileencodings=ucs-bom,utf-8,cp932,iso-2022-jp,euc-jisx0213,euc-jp,sjis,guess " 読込み時の自動判別
+set ambiwidth=double " □や○文字、三点リーダ等の表示問題解決
+set fileformats=unix,dos,mac " 改行コードの自動判別
 
 """"""""""""""""""""""""""""""
 " vim-plugのインストール
 """"""""""""""""""""""""""""""
-
-" if empty(glob('~/.vim/autoload/plug.vim'))
-"   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-"     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-"   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-" endif
-
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 """"""""""""""""""""""""""""""
 " プラグインのセットアップ
 """"""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
 
-" ファイルオープンを便利に
-Plug 'Shougo/unite.vim'
-" ファイルをtree表示してくれる
-Plug 'scrooloose/nerdtree'
-" インデントに色を付けて見やすくする
-Plug 'nathanaelkane/vim-indent-guides'
-let g:indent_guides_enable_on_vim_startup = 1
-" 文字入力時に自動で補完候補が表示
-Plug 'Shougo/neocomplete.vim'
-let g:neocomplete#enable_at_startup = 1
-" キーを押す回数によって`=`の前後のスペーストグル
-Plug 'kana/vim-smartchr'
-inoremap <buffer> <expr> = smartchr#loop(' = ', '=')
-" コメントとコメント解除をトグル
-Plug 'tyru/caw.vim'
-nmap <C-k> <plug>(caw:i:toggle)
-vmap <C-k> <plug>(caw:i:toggle)
-" 括弧を自動で閉じる
-Plug 'cohama/lexima.vim'
+Plug 'Shougo/unite.vim' " ファイルオープンを便利に
+Plug 'scrooloose/nerdtree' " ディレクトリをtree表示
+Plug 'nathanaelkane/vim-indent-guides'　" インデントに色を付けて見やすく
+Plug 'kana/vim-smartchr' " キー入力補助
+Plug 'tpope/vim-fugitive' " vim上でGitを使う
+Plug 'Shougo/deoplete.nvim' " 強力な入力補完
+Plug 'roxma/nvim-yarp' " vim8でdeoplete.nvimを使うのに必要
+Plug 'roxma/vim-hug-neovim-rpc' " vim8でdeoplete.nvimを使うのに必要
 
 call plug#end()
-
-call lexima#add_rule({'at': '\%#.*[-0-9a-zA-Z_,:]', 'char': '{', 'input': '{'})
-call lexima#add_rule({'at': '\%#\n\s*}', 'char': '}', 'input': '}', 'delete': '}'})
-" filetypeの検出を有効化する => vim-plugでは不要
-" filetype plugin indent on
-
 """"""""""""""""""""""""""""""
-" 各種オプションの設定
+" プラグインのオプション
 """"""""""""""""""""""""""""""
-
-" set number "Display line number
-" set title "Display file name
-" set showmatch "Display pair bracket
-" syntax on
-" set tabstop=2 "Indent using spaces 2
-" set smartindent "Autoindent
-"
-" set encoding=utf-8
-" set fileencodings=utf-8,euc-jp,sjis,cp932,iso-2022-jp
-"
-" set ignorecase "Not case sensitive
-" set smartcase "If capital letters are included, distinguish it
-" set wrapscan "When searching, return from the end to the begining
-
-" タグファイルの指定(でもタグジャンプは使ったことがない)
-set tags=~/.tags
-" スワップファイルは使わない(ときどき面倒な警告が出るだけで役に立ったことがない)
-set noswapfile
-" undoファイルは作成しない
-set noundofile
-" カーソルが何行目の何列目に置かれているかを表示する
-set ruler
-" コマンドラインに使われる画面上の行数
-set cmdheight=2
-" エディタウィンドウの末尾から2行目にステータスラインを常時表示させる
-set laststatus=2
-" ステータス行に表示させる情報の指定(どこからかコピペしたので細かい意味はわかっていない)
-set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
-" ステータス行に現在のgitブランチを表示する
-set statusline+=%{fugitive#statusline()}
-" ウインドウのタイトルバーにファイルのパス情報等を表示する
-set title
-" コマンドラインモードで<Tab>キーによるファイル名補完を有効にする
-set wildmenu
-" 入力中のコマンドを表示する
-set showcmd
-" バックアップディレクトリの指定(でもバックアップは使ってない)
-set backupdir=$HOME/.vimbackup
-" バッファで開いているファイルのディレクトリでエクスクローラを開始する(でもエクスプローラって使ってない)
-set browsedir=buffer
-" 小文字のみで検索したときに大文字小文字を無視する
-set smartcase
-" 検索結果をハイライト表示する
-set hlsearch
-" 暗い背景色に合わせた配色にする
-set background=dark
-" タブ入力を複数の空白入力に置き換える
-set expandtab
-" 検索ワードの最初の文字を入力した時点で検索を開始する
-set incsearch
-" 保存されていないファイルがあるときでも別のファイルを開けるようにする
-set hidden
-" 不可視文字を表示する
-set list
-" タブと行の続きを可視化する
-set listchars=tab:>\ ,extends:<
-" 行番号を表示する
-set number
-" 対応する括弧やブレースを表示する
-set showmatch
-" 改行時に前の行のインデントを継続する
-set autoindent
-" 改行時に入力された行の末尾に合わせて次の行のインデントを増減する
-set smartindent
-" タブ文字の表示幅
-set tabstop=2
-" Vimが挿入するインデントの幅
-set shiftwidth=2
-" 行頭の余白内で Tab を打ち込むと、'shiftwidth' の数だけインデントする
-set smarttab
-" カーソルを行頭、行末で止まらないようにする
-set whichwrap=b,s,h,l,<,>,[,]
-" 構文毎に文字色を変化させる
-syntax on
-" カラースキーマの指定
-colorscheme desert
-" 行番号の色
-highlight LineNr ctermfg=darkyellow
-" 勝手に改行するのを防ぐ
-" set textwidth=0
-set formatoptions=q
-" textwidthでフォーマットさせたくない
-set formatoptions=q
-" クラッシュ防止（http://superuser.com/questions/810622/vim-crashes-freezes-on-specific-files-mac-osx-mavericks）
-set synmaxcol=200
-""""""""""""""""""""""""""""""
-
-" grep検索の実行後にQuickFix Listを表示する
-autocmd QuickFixCmdPost *grep* cwindow
-
-" http://blog.remora.cx/2010/12/vim-ref-with-unite.html
-""""""""""""""""""""""""""""""
-" Unite.vimの設定
-""""""""""""""""""""""""""""""
-" 入力モードで開始する
-let g:unite_enable_start_insert=1
-" バッファ一覧
-noremap <C-P> :Unite buffer<CR>
-" ファイル一覧
-noremap <C-N> :Unite -buffer-name=file file<CR>
-" 最近使ったファイルの一覧
-noremap <C-Z> :Unite file_mru<CR>
-" sourcesを「今開いているファイルのディレクトリ」とする
-noremap :uff :<C-u>UniteWithBufferDir file -buffer-name=file<CR>
-" ウィンドウを分割して開く
-au FileType unite nnoremap <silent> <buffer> <expr> <C-J> unite#do_action('split')
-au FileType unite inoremap <silent> <buffer> <expr> <C-J> unite#do_action('split')
+" unite.vim オプション
+let g:unite_enable_start_insert=1 " インサートモードで開始
+let g:unite_source_file_mru_limit = 30 " 最近開いたファイル履歴の保存数
+nmap <Space> [unite] " prefix keyの設定
+nnoremap <silent> [unite]b :<C-u>Unite buffer<CR> " スペース+bでバッファを表示
+nnoremap <silent> [unite]h :<C-u>Unite file_mru<CR> " スペース+hで使用履歴を表示
+autocmd FileType unite call s:unite_my_settings() " unite使用時のキーマッピング
+function! s:unite_my_settings()"{{{
+  nmap <buffer> <ESC> <Plug>(unite_exit) " ESCでuniteを終了
+endfunction"}}}
 " ウィンドウを縦に分割して開く
-au FileType unite nnoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
-au FileType unite inoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
-" ESCキーを2回押すと終了する
-au FileType unite nnoremap <silent> <buffer> <ESC><ESC> :q<CR>
-au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
+"au FileType unite nnoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
+"au FileType unite inoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
+""""""""""""""""""""""""""""""
+" nerdtree オプション
+map <C-d> :NERDTreeToggle<CR> " Ctrl + d でディレクトリツリーのトグル表示
+""""""""""""""""""""""""""""""
+" vim-indent-guides オプション
+let g:indent_guides_enable_on_vim_startup = 1 " 自動有効
+let g:indent_guides_start_level = 2
+let g:indent_guides_guide_size = 1
+let g:indent_guides_exclude_filetypes = ['help', 'nerdtree', 'tagbar', 'unite']
+""""""""""""""""""""""""""""""
+" vim-smartchr オプション
+inoremap <buffer> <expr> = smartchr#loop(' = ', '=') " =キートグル
+""""""""""""""""""""""""""""""
+" vim-fugitive オプション
+if isdirectory(expand('~/.vim/bundle/vim-fugitive'))
+  set statusline+=%{fugitive#statusline()} " ステータス行にブランチを表示
+endif
+""""""""""""""""""""""""""""""
+" deoplete.nvim オプション
+let g:deoplete#enable_at_startup = 1 " 自動有効
+""""""""""""""""""""""""""""""
+" 各種設定
 """"""""""""""""""""""""""""""
 
-" http://inari.hatenablog.com/entry/2014/05/05/231307
+" タブ入力とインデント(http://blog.sojiro.me/blog/2014/12/26/tab-and-space-on-vim/)
+set expandtab " タブ入力を空白入力に
+set tabstop=2 " タブ文字が占める空白の幅
+set softtabstop=2 " 連続した空白に対してタブやバックスペースでカーソルが動く幅
+set autoindent " 改行時に前の行のインデントを継続
+set smarttab " 行頭のタブに対してshiftwidthの幅だけ増減
+set smartindent " 改行時に前の行の構文をチェックし次の行のインデントを増減
+set shiftwidth=2 " 増減するインデントの幅
+set backspace=indent,eol,start " バックスペースでなんでも消せるように
+
+" 表示設定
+set list " 不可視文字の可視化
+set listchars=tab:>.,trail:_,extends:>,precedes:< " 不可視文字の表示形式
+set number " 行番号の表示
+highlight LineNr ctermfg=darkyellow " 行番号の色
+set showmatch " 対応する括弧の表示
+colorscheme desert " カラースキーマの指定
+set t_Co=256 " iTerm2など既に256色環境
+syntax on " シンタックスハイライトを有効
+set cmdheight=2 " コマンドラインに使われる画面上の行数
+set ruler " カーソルが何行目の何列目に置かれているかを表示
+set title　" タイトルバーにファイルのパス情報等を表示
+set display=uhex " 印字不可能文字を16進数で表示
+set lazyredraw " コマンド実行中は再描画しない
+
+" ステータスライン表示
+set statusline=%F　" ファイル名表示
+set statusline+=%m　" 変更チェック表示
+set statusline+=%r　" 読み込み専用かどうか表示
+set statusline+=%h　" ヘルプページなら[HELP]と表示
+set statusline+=%w " プレビューウインドウなら[Prevew]と表示
+set statusline+=%= " これ以降は右寄せ表示
+set statusline+=[ENC=%{&fileencoding}] " ファイルエンコードを表示
+set statusline+=[LOW=%l/%L] " 現在行数と全行数を表示
+set laststatus=2 " エディタウィンドウの末尾から2行目にステータスラインを常時表示
+
+" カーソル設定
+set whichwrap=b,s,h,l,<,>,[,] " カーソル移動で行末から次の行頭への移動が可能
+set cursorline " カーソルラインをハイライト
+
+" コマンドの補完
+set wildmenu " コマンドラインモードで<Tab>キーによるファイル名補完を有効
+set showcmd　" 入力中のコマンドを表示する
+set history=500 " 保存するコマンド履歴の数
+
+" クリップボードからペーストする時だけインデントしない
+if &term =~ "xterm"
+    let &t_SI .= "\e[?2004h"
+    let &t_EI .= "\e[?2004l"
+    let &pastetoggle = "\e[201~"
+    function XTermPasteBegin(ret)
+        set paste
+        return a:ret
+    endfunction
+    inoremap <special> <expr> <Esc>[200~ XTermPasteBegin("")
+endif
+
+" vimを終了してもUNDO履歴を保存
+if has('persistent_undo')
+  set undodir=~/.vim/undo
+  set undofile
+endif
+
+" 自動成形関連
+set textwidth=0 " 自動折り返しをしない
+set formatoptions=lmoq " テキスト整形オプション、マルチバイト系を追加
+
+
+" Swap, Backupなどを無効化
+set nowritebackup
+set nobackup
+set noswapfile
+
+" 検索設定
+set ignorecase " 大文字小文字を無視して検索
+set smartcase　" 大文字を含む場合、大文字と小文字を区別して検索
+set hlsearch　" 検索結果をハイライト表示
+set incsearch " インクリメンタルサーチ可
+set wrapscan " 検索結果の最後から最初に戻る
+nnoremap <silent><Esc><Esc> :<C-u>set nohlsearch!<CR>　" ESC2回でハイライト切替
+
+" ファイル関連
+set ambiwidth=double " vimに全角を解釈させる
+set autoread " 外部エディタの変更を自動反映
+set hidden " 変更中でも他のファイルを開く
+
+" その他
+set background=dark " 暗い背景色に合わせた配色にする
+set visualbell t_vb= " ビープ音を鳴らさない
+
 """"""""""""""""""""""""""""""
-" 全角スペースの表示
+" 全角スペースの表示 http://inari.hatenablog.com/entry/2014/05/05/231307
 """"""""""""""""""""""""""""""
 function! ZenkakuSpace()
     highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=darkgray
@@ -180,11 +178,9 @@ if has('syntax')
     augroup END
     call ZenkakuSpace()
 endif
-""""""""""""""""""""""""""""""
 
-" https://sites.google.com/site/fudist/Home/vim-nihongo-ban/-vimrc-sample
 """"""""""""""""""""""""""""""
-" 挿入モード時、ステータスラインの色を変更
+" 挿入モード時、ステータスラインの色を変更 https://sites.google.com/site/fudist/Home/vim-nihongo-ban/-vimrc-sample
 """"""""""""""""""""""""""""""
 let g:hi_insert = 'highlight StatusLine guifg=darkblue guibg=darkyellow gui=none ctermfg=blue ctermbg=yellow cterm=none'
 
@@ -215,7 +211,6 @@ function! s:GetHighlight(hi)
   let hl = substitute(hl, 'xxx', '', '')
   return hl
 endfunction
-""""""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""
 " 最後のカーソル位置を復元する
@@ -226,15 +221,6 @@ if has("autocmd")
     \   exe "normal! g'\"" |
     \ endif
 endif
-""""""""""""""""""""""""""""""
-
-""""""""""""""""""""""""""""""
-" 自動的に閉じ括弧を入力
-""""""""""""""""""""""""""""""
-imap { {}<LEFT>
-imap [ []<LEFT>
-imap ( ()<LEFT>
-""""""""""""""""""""""""""""""
 
 " filetypeの自動検出(最後の方に書いた方がいいらしい)
 filetype on
