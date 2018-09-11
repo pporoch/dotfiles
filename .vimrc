@@ -123,14 +123,14 @@ set history=500 " 保存するコマンド履歴の数
 
 " クリップボードからペーストする時だけインデントしない
 if &term =~ "xterm"
-    let &t_SI .= "\e[?2004h"
-    let &t_EI .= "\e[?2004l"
-    let &pastetoggle = "\e[201~"
-    function XTermPasteBegin(ret)
-        set paste
-        return a:ret
-    endfunction
-    inoremap <special> <expr> <Esc>[200~ XTermPasteBegin("")
+  let &t_SI .= "\e[?2004h"
+  let &t_EI .= "\e[?2004l"
+  let &pastetoggle = "\e[201~"
+  function XTermPasteBegin(ret)
+    set paste
+    return a:ret
+  endfunction
+  inoremap <special> <expr> <Esc>[200~ XTermPasteBegin("")
 endif
 
 " vimを終了してもUNDO履歴を保存
@@ -142,7 +142,6 @@ endif
 " 自動成形関連
 set textwidth=0 " 自動折り返しをしない
 set formatoptions=lmoq " テキスト整形オプション、マルチバイト系を追加
-
 
 " Swap, Backupなどを無効化
 set nowritebackup
@@ -167,38 +166,43 @@ set background=dark " 暗い背景色に合わせた配色にする
 set visualbell t_vb= " ビープ音を鳴らさない
 
 """"""""""""""""""""""""""""""
-"行頭のスペースの連続をハイライトさせる
-"Tab文字も区別されずにハイライトされるので、区別したいときはTab文字の表示を別に設定
+" 保存時の自動成型 https://qiita.com/katton/items/bc9720826120f5f61fc1
 """"""""""""""""""""""""""""""
-function! SOLSpaceHilight()
-    syntax match SOLSpace "^\s\+" display containedin=ALL
-    highlight SOLSpace term=underline ctermbg=LightGray
-endf
+function! s:remove_dust()
+    let cursor = getpos(".")
+    " 保存時に行末の空白を除去する
+    %s/\s\+$//ge
+    " 保存時にtabを2スペースに変換する
+    %s/\t/  /ge
+    call setpos(".", cursor)
+    unlet cursor
+endfunction
+autocmd BufWritePre * call <SID>remove_dust()
 """"""""""""""""""""""""""""""
 " 全角スペースの表示 http://inari.hatenablog.com/entry/2014/05/05/231307
 """"""""""""""""""""""""""""""
 if has("syntax")
-    syntax on
-    " PODバグ対策
-    syn sync fromstart
-    function! ActivateInvisibleIndicator()
-        " 下の行の"　"は全角スペース
-        syntax match InvisibleJISX0208Space "　" display containedin=ALL
-        highlight InvisibleJISX0208Space term=underline ctermbg=Blue guibg=darkgray gui=underline
-    endfunction
-    augroup invisible
-        autocmd! invisible
-        autocmd BufNew,BufRead * call ActivateInvisibleIndicator()
-    augroup END
+  syntax on
+  " PODバグ対策
+  syn sync fromstart
+  function! ActivateInvisibleIndicator()
+    " 下の行の"　"は全角スペース
+    syntax match InvisibleJISX0208Space "　" display containedin=ALL
+    highlight InvisibleJISX0208Space term=underline ctermbg=Blue guibg=darkgray gui=underline
+  endfunction
+  augroup invisible
+    autocmd! invisible
+    autocmd BufNew,BufRead * call ActivateInvisibleIndicator()
+  augroup END
 endif
 """"""""""""""""""""""""""""""
 " 最後のカーソル位置を復元する
 """"""""""""""""""""""""""""""
 if has("autocmd")
-    autocmd BufReadPost *
-    \ if line("'\"") > 0 && line ("'\"") <= line("$") |
-    \   exe "normal! g'\"" |
-    \ endif
+  autocmd BufReadPost *
+  \ if line("'\"") > 0 && line ("'\"") <= line("$") |
+  \   exe "normal! g'\"" |
+  \ endif
 endif
 
 " filetypeの自動検出(最後の方に書いた方がいいらしい)
