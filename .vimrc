@@ -88,7 +88,7 @@ set backspace=indent,eol,start " バックスペースでなんでも消せる�
 
 " 表示設定
 set list " 不可視文字の可視化
-set listchars=tab:»-,trail:-,eol:↲↵↩↲,space:･,nbsp:% " 不可視文字の表示形式
+set listchars=tab:»-,trail:-,eol:↲,nbsp:% " 不可視文字の表示形式
 set number " 行番号の表示
 highlight LineNr ctermfg=darkyellow " 行番号の色
 set showmatch " 対応する括弧の表示
@@ -166,6 +166,14 @@ set hidden " 変更中でも他のファイルを開く
 set background=dark " 暗い背景色に合わせた配色にする
 set visualbell t_vb= " ビープ音を鳴らさない
 
+""""""""""""""""""""""""""""""
+"行頭のスペースの連続をハイライトさせる
+"Tab文字も区別されずにハイライトされるので、区別したいときはTab文字の表示を別に設定
+""""""""""""""""""""""""""""""
+function! SOLSpaceHilight()
+    syntax match SOLSpace "^\s\+" display containedin=ALL
+    highlight SOLSpace term=underline ctermbg=LightGray
+endf
 """"""""""""""""""""""""""""""
 " 全角スペースの表示 http://inari.hatenablog.com/entry/2014/05/05/231307
 """"""""""""""""""""""""""""""
