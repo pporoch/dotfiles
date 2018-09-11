@@ -25,7 +25,7 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'Shougo/unite.vim' " ファイルオープンを便利に
 Plug 'scrooloose/nerdtree' " ディレクトリをtree表示
-Plug 'nathanaelkane/vim-indent-guides'　" インデントに色を付けて見やすく
+Plug 'nathanaelkane/vim-indent-guides' " インデントを見やすく
 Plug 'kana/vim-smartchr' " キー入力補助
 Plug 'tpope/vim-fugitive' " vim上でGitを使う
 Plug 'Shougo/deoplete.nvim' " 強力な入力補完
@@ -58,7 +58,7 @@ map <C-d> :NERDTreeToggle<CR> " Ctrl + d でディレクトリツリーのトグ
 """"""""""""""""""""""""""""""
 " vim-indent-guides オプション
 let g:indent_guides_enable_on_vim_startup = 1 " 自動有効
-let g:indent_guides_start_level = 2
+let g:indent_guides_start_level = 1
 let g:indent_guides_guide_size = 1
 let g:indent_guides_exclude_filetypes = ['help', 'nerdtree', 'tagbar', 'unite']
 """"""""""""""""""""""""""""""
@@ -77,18 +77,18 @@ let g:deoplete#enable_at_startup = 1 " 自動有効
 """"""""""""""""""""""""""""""
 
 " タブ入力とインデント(http://blog.sojiro.me/blog/2014/12/26/tab-and-space-on-vim/)
-set expandtab " タブ入力を空白入力に
-set tabstop=2 " タブ文字が占める空白の幅
+set expandtab " ソフトタブを有効に
+set tabstop=2 " ソフトタブの空白の幅
 set softtabstop=2 " 連続した空白に対してタブやバックスペースでカーソルが動く幅
 set autoindent " 改行時に前の行のインデントを継続
 set smarttab " 行頭のタブに対してshiftwidthの幅だけ増減
 set smartindent " 改行時に前の行の構文をチェックし次の行のインデントを増減
-set shiftwidth=2 " 増減するインデントの幅
+set shiftwidth=2 " オートインデント時の空白の幅
 set backspace=indent,eol,start " バックスペースでなんでも消せるように
 
 " 表示設定
 set list " 不可視文字の可視化
-set listchars=tab:>.,trail:_,extends:>,precedes:< " 不可視文字の表示形式
+set listchars=tab:»-,trail:-,nbsp:%,eol:↲ " 不可視文字の表示形式
 set number " 行番号の表示
 highlight LineNr ctermfg=darkyellow " 行番号の色
 set showmatch " 対応する括弧の表示
@@ -97,15 +97,15 @@ set t_Co=256 " iTerm2など既に256色環境
 syntax on " シンタックスハイライトを有効
 set cmdheight=2 " コマンドラインに使われる画面上の行数
 set ruler " カーソルが何行目の何列目に置かれているかを表示
-set title　" タイトルバーにファイルのパス情報等を表示
+set title " タイトルバーにファイルのパス情報等を表示
 set display=uhex " 印字不可能文字を16進数で表示
 set lazyredraw " コマンド実行中は再描画しない
 
 " ステータスライン表示
-set statusline=%F　" ファイル名表示
-set statusline+=%m　" 変更チェック表示
-set statusline+=%r　" 読み込み専用かどうか表示
-set statusline+=%h　" ヘルプページなら[HELP]と表示
+set statusline=%F " ファイル名表示
+set statusline+=%m " 変更チェック表示
+set statusline+=%r " 読み込み専用かどうか表示
+set statusline+=%h " ヘルプページなら[HELP]と表示
 set statusline+=%w " プレビューウインドウなら[Prevew]と表示
 set statusline+=%= " これ以降は右寄せ表示
 set statusline+=[ENC=%{&fileencoding}] " ファイルエンコードを表示
@@ -118,7 +118,7 @@ set cursorline " カーソルラインをハイライト
 
 " コマンドの補完
 set wildmenu " コマンドラインモードで<Tab>キーによるファイル名補完を有効
-set showcmd　" 入力中のコマンドを表示する
+set showcmd " 入力中のコマンドを表示する
 set history=500 " 保存するコマンド履歴の数
 
 " クリップボードからペーストする時だけインデントしない
@@ -151,11 +151,11 @@ set noswapfile
 
 " 検索設定
 set ignorecase " 大文字小文字を無視して検索
-set smartcase　" 大文字を含む場合、大文字と小文字を区別して検索
-set hlsearch　" 検索結果をハイライト表示
+set smartcase " 大文字を含む場合、大文字と小文字を区別して検索
+set hlsearch " 検索結果をハイライト表示
 set incsearch " インクリメンタルサーチ可
 set wrapscan " 検索結果の最後から最初に戻る
-nnoremap <silent><Esc><Esc> :<C-u>set nohlsearch!<CR>　" ESC2回でハイライト切替
+nnoremap <silent><Esc><Esc> :<C-u>set nohlsearch!<CR> " ESC2回でハイライト切替
 
 " ファイル関連
 set ambiwidth=double " vimに全角を解釈させる
@@ -177,43 +177,43 @@ if has('syntax')
     augroup ZenkakuSpace
         autocmd!
         autocmd ColorScheme * call ZenkakuSpace()
-        autocmd VimEnter,WinEnter,BufRead * let w:m1=matchadd('ZenkakuSpace', '　')
+        autocmd VimEnter,WinEnter,BufRead * let w:m1=matchadd('ZenkakuSpace', ' ')
     augroup END
     call ZenkakuSpace()
 endif
 
 """"""""""""""""""""""""""""""
-" 挿入モード時、ステータスラインの色を変更 https://sites.google.com/site/fudist/Home/vim-nihongo-ban/-vimrc-sample
+" 挿入モード時、ステータスラインの色を変更 https://sites.google.com/site/fudist/Home/vim-nihongo-ban/vim-color
 """"""""""""""""""""""""""""""
-let g:hi_insert = 'highlight StatusLine guifg=darkblue guibg=darkyellow gui=none ctermfg=blue ctermbg=yellow cterm=none'
-
-if has('syntax')
-  augroup InsertHook
-    autocmd!
-    autocmd InsertEnter * call s:StatusLine('Enter')
-    autocmd InsertLeave * call s:StatusLine('Leave')
-  augroup END
-endif
-
-let s:slhlcmd = ''
-function! s:StatusLine(mode)
-  if a:mode == 'Enter'
-    silent! let s:slhlcmd = 'highlight ' . s:GetHighlight('StatusLine')
-    silent exec g:hi_insert
-  else
-    highlight clear StatusLine
-    silent exec s:slhlcmd
-  endif
-endfunction
-
-function! s:GetHighlight(hi)
-  redir => hl
-  exec 'highlight '.a:hi
-  redir END
-  let hl = substitute(hl, '[\r\n]', '', 'g')
-  let hl = substitute(hl, 'xxx', '', '')
-  return hl
-endfunction
+"let g:hi_insert = 'highlight StatusLine guifg=darkblue guibg=darkyellow gui=none ctermfg=blue ctermbg=yellow cterm=none'
+"
+"if has('syntax')
+"  augroup InsertHook
+"    autocmd!
+"    autocmd InsertEnter * call s:StatusLine('Enter')
+"    autocmd InsertLeave * call s:StatusLine('Leave')
+"  augroup END
+"endif
+"
+"let s:slhlcmd = ''
+"function! s:StatusLine(mode)
+"  if a:mode == 'Enter'
+"    silent! let s:slhlcmd = 'highlight ' . s:GetHighlight('StatusLine')
+"    silent exec g:hi_insert
+"  else
+"    highlight clear StatusLine
+"    silent exec s:slhlcmd
+"  endif
+"endfunction
+"
+"function! s:GetHighlight(hi)
+"  redir => hl
+"  exec 'highlight '.a:hi
+"  redir END
+"  let hl = substitute(hl, '[\r\n]', '', 'g')
+"  let hl = substitute(hl, 'xxx', '', '')
+"  return hl
+"endfunction
 
 """"""""""""""""""""""""""""""
 " 最後のカーソル位置を復元する
