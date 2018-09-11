@@ -88,7 +88,7 @@ set backspace=indent,eol,start " バックスペースでなんでも消せる�
 
 " 表示設定
 set list " 不可視文字の可視化
-set listchars=tab:»-,trail:-,nbsp:%,eol:↲ " 不可視文字の表示形式
+set listchars=tab:»-,trail:-,eol:↲↵↩↲,space:･,nbsp:% " 不可視文字の表示形式
 set number " 行番号の表示
 highlight LineNr ctermfg=darkyellow " 行番号の色
 set showmatch " 対応する括弧の表示
@@ -153,7 +153,7 @@ set noswapfile
 set ignorecase " 大文字小文字を無視して検索
 set smartcase " 大文字を含む場合、大文字と小文字を区別して検索
 set hlsearch " 検索結果をハイライト表示
-set incsearch " インクリメンタルサーチ可
+set noincsearch " インクリメンタルサーチしない
 set wrapscan " 検索結果の最後から最初に戻る
 nnoremap <silent><Esc><Esc> :<C-u>set nohlsearch!<CR> " ESC2回でハイライト切替
 
@@ -169,52 +169,20 @@ set visualbell t_vb= " ビープ音を鳴らさない
 """"""""""""""""""""""""""""""
 " 全角スペースの表示 http://inari.hatenablog.com/entry/2014/05/05/231307
 """"""""""""""""""""""""""""""
-function! ZenkakuSpace()
-    highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=darkgray
-endfunction
-
-if has('syntax')
-    augroup ZenkakuSpace
-        autocmd!
-        autocmd ColorScheme * call ZenkakuSpace()
-        autocmd VimEnter,WinEnter,BufRead * let w:m1=matchadd('ZenkakuSpace', ' ')
+if has("syntax")
+    syntax on
+    " PODバグ対策
+    syn sync fromstart
+    function! ActivateInvisibleIndicator()
+        " 下の行の"　"は全角スペース
+        syntax match InvisibleJISX0208Space "　" display containedin=ALL
+        highlight InvisibleJISX0208Space term=underline ctermbg=Blue guibg=darkgray gui=underline
+    endfunction
+    augroup invisible
+        autocmd! invisible
+        autocmd BufNew,BufRead * call ActivateInvisibleIndicator()
     augroup END
-    call ZenkakuSpace()
 endif
-
-""""""""""""""""""""""""""""""
-" 挿入モード時、ステータスラインの色を変更 https://sites.google.com/site/fudist/Home/vim-nihongo-ban/vim-color
-""""""""""""""""""""""""""""""
-"let g:hi_insert = 'highlight StatusLine guifg=darkblue guibg=darkyellow gui=none ctermfg=blue ctermbg=yellow cterm=none'
-"
-"if has('syntax')
-"  augroup InsertHook
-"    autocmd!
-"    autocmd InsertEnter * call s:StatusLine('Enter')
-"    autocmd InsertLeave * call s:StatusLine('Leave')
-"  augroup END
-"endif
-"
-"let s:slhlcmd = ''
-"function! s:StatusLine(mode)
-"  if a:mode == 'Enter'
-"    silent! let s:slhlcmd = 'highlight ' . s:GetHighlight('StatusLine')
-"    silent exec g:hi_insert
-"  else
-"    highlight clear StatusLine
-"    silent exec s:slhlcmd
-"  endif
-"endfunction
-"
-"function! s:GetHighlight(hi)
-"  redir => hl
-"  exec 'highlight '.a:hi
-"  redir END
-"  let hl = substitute(hl, '[\r\n]', '', 'g')
-"  let hl = substitute(hl, 'xxx', '', '')
-"  return hl
-"endfunction
-
 """"""""""""""""""""""""""""""
 " 最後のカーソル位置を復元する
 """"""""""""""""""""""""""""""
