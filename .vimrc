@@ -24,7 +24,7 @@ endif
 call plug#begin('~/.vim/plugged')
 
 Plug 'Shougo/unite.vim' " ファイルオープンを便利に
-Plug 'Shougo/neomru' " unite.vimで file_mruを使うのに必要
+Plug 'Shougo/neomru.vim' " unite.vimで file_mruを使うのに必要
 Plug 'scrooloose/nerdtree' " ディレクトリをtree表示
 Plug 'nathanaelkane/vim-indent-guides' " インデントを見やすく
 Plug 'kana/vim-smartchr' " キー入力補助
