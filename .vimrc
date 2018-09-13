@@ -40,18 +40,18 @@ call plug#end()
 " プラグインのオプション
 """"""""""""""""""""""""""""""
 " unite.vim オプション
-let g:unite_enable_start_insert=1 " インサートモードで開始
-let g:unite_source_file_mru_limit = 30 " 最近開いたファイル履歴の保存数
-nmap <Space> [unite] " prefix keyの設定
-nnoremap <silent> [unite]b :<C-u>Unite buffer<CR> " スペース+bでバッファを表示
-nnoremap <silent> [unite]h :<C-u>Unite file_mru<CR> " スペース+hで使用履歴を表示
-autocmd FileType unite call s:unite_my_settings() " unite使用時のキーマッピング
-function! s:unite_my_settings()"{{{
-  nmap <buffer> <ESC> <Plug>(unite_exit) " ESCでuniteを終了
-endfunction"}}}
-" ウィンドウを縦に分割して開く
-"au FileType unite nnoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
-"au FileType unite inoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
+" 起動時にインサートモードで開始
+let g:unite_enable_start_insert = 1
+" インサート／ノーマルどちらからでも呼び出せるようにキーマップ
+nnoremap <silent> <C-h> :<C-u>Unite file_mru<CR>
+inoremap <silent> <C-h> <ESC>:<C-u>Unite file_mru<CR>
+nnoremap <silent> <C-b> :<C-u>Unite buffer<CR>
+inoremap <silent> <C-b> <ESC>:<C-u>Unite buffer<CR>
+autocmd FileType unite call s:unite_my_settings() " unite.vim上でのキーマッピング
+function! s:unite_my_settings()
+  nmap <silent><buffer> <ESC><ESC> q " ESCキーを2回押すと終了する
+  imap <silent><buffer> <ESC><ESC> <ESC>q " ESCキーを2回押すと終了する
+endfunction
 """"""""""""""""""""""""""""""
 " nerdtree オプション
 map <C-d> :NERDTreeToggle<CR> " Ctrl + d でディレクトリツリーのトグル表示
