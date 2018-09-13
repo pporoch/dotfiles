@@ -22,20 +22,17 @@ endif
 " プラグインのセットアップ
 """"""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
-
-Plug 'Shougo/unite.vim' " ファイルオープンを便利に
-Plug 'Shougo/neomru.vim' " unite.vimで file_mruを使うのに必要
-Plug 'scrooloose/nerdtree' " ディレクトリをtree表示
-Plug 'nathanaelkane/vim-indent-guides' " インデントを見やすく
-Plug 'kana/vim-smartchr' " キー入力補助
-Plug 'tpope/vim-fugitive' " vim上でGitを使う
-Plug 'Shougo/deoplete.nvim' " 強力な入力補完
-Plug 'roxma/nvim-yarp' " vim8でdeoplete.nvimを使うのに必要
-Plug 'roxma/vim-hug-neovim-rpc' " vim8でdeoplete.nvimを使うのに必要
-Plug 'Shougo/neco-syntax' " deoplete.nvim用ソースプラグイン
+  Plug 'Shougo/unite.vim' " ファイルオープンを便利に
+  Plug 'Shougo/neomru.vim' " unite.vimで file_mruを使うのに必要
+  Plug 'scrooloose/nerdtree' " ディレクトリをtree表示
+  Plug 'nathanaelkane/vim-indent-guides' " インデントを見やすく
+  Plug 'kana/vim-smartchr' " キー入力補助
+  Plug 'tpope/vim-fugitive' " vim上でGitを使う
+  Plug 'Shougo/deoplete.nvim' " 強力な入力補完
+  Plug 'roxma/nvim-yarp' " vim8でdeoplete.nvimを使うのに必要
+  Plug 'roxma/vim-hug-neovim-rpc' " vim8でdeoplete.nvimを使うのに必要
+  Plug 'Shougo/neco-syntax' " deoplete.nvim用ソースプラグイン
 " [deoplete.nvim用ソースプラグイン一覧](https://github.com/Shougo/deoplete.nvim/wiki/Completion-Sources)
-
-
 call plug#end()
 """"""""""""""""""""""""""""""
 " プラグインのオプション
@@ -91,10 +88,7 @@ set backspace=indent,eol,start " バックスペースでなんでも消せる�
 set list " 不可視文字の可視化
 set listchars=tab:»-,trail:-,eol:↲,nbsp:% " 不可視文字の表示形式
 set number " 行番号の表示
-highlight LineNr ctermfg=darkyellow " 行番号の色
 set showmatch " 対応する括弧の表示
-colorscheme desert " カラースキーマの指定
-set t_Co=256 " iTerm2など既に256色環境
 syntax on " シンタックスハイライトを有効
 set cmdheight=2 " コマンドラインに使われる画面上の行数
 set ruler " カーソルが何行目の何列目に置かれているかを表示
@@ -208,3 +202,4 @@ endif
 
 " filetypeの自動検出(最後の方に書いた方がいいらしい)
 filetype on
+
