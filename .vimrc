@@ -38,17 +38,15 @@ call plug#end()
 " プラグインのオプション
 """"""""""""""""""""""""""""""
 " unite.vim オプション
-" 起動時にインサートモードで開始
-let g:unite_enable_start_insert = 1
-" インサート／ノーマルどちらからでも呼び出せるようにキーマップ
-nnoremap <silent> <C-h> :<C-u>Unite file_mru<CR>
-inoremap <silent> <C-h> <ESC>:<C-u>Unite file_mru<CR>
-nnoremap <silent> <C-b> :<C-u>Unite buffer<CR>
-inoremap <silent> <C-b> <ESC>:<C-u>Unite buffer<CR>
+let g:unite_enable_start_insert = 1 " 起動時にインサートモードで開始
+nnoremap <silent> <C-h> :<C-u>Unite file_mru<CR> " ノーマル:<C-h>で履歴一覧
+inoremap <silent> <C-h> <ESC>:<C-u>Unite file_mru<CR> " インサート:<C-h>で履歴一覧
+nnoremap <silent> <C-b> :<C-u>Unite buffer<CR> " ノーマル:<C-b>でバッファ一覧
+inoremap <silent> <C-b> <ESC>:<C-u>Unite buffer<CR> " インサート:<C-b>でバッファ一覧
 autocmd FileType unite call s:unite_my_settings() " unite.vim上でのキーマッピング
 function! s:unite_my_settings()
-  nmap <silent><buffer> <ESC><ESC> q " ESCキーを2回押すと終了する
-  imap <silent><buffer> <ESC><ESC> <ESC>q " ESCキーを2回押すと終了する
+  nmap <silent><buffer> <ESC><ESC> q " ノーマル:ESCキー2回押しで終了
+  imap <silent><buffer> <ESC><ESC> <ESC>q " インサート:ESCキー2回押しで終了
 endfunction
 """"""""""""""""""""""""""""""
 " nerdtree オプション
@@ -64,9 +62,7 @@ let g:indent_guides_exclude_filetypes = ['help', 'nerdtree', 'tagbar', 'unite']
 inoremap <buffer> <expr> = smartchr#loop(' = ', '=') " =キートグル
 """"""""""""""""""""""""""""""
 " vim-fugitive オプション
-if isdirectory(expand('~/.vim/bundle/vim-fugitive'))
-  set statusline+=%{fugitive#statusline()} " ステータス行にブランチを表示
-endif
+set statusline+=%{exists('g:loaded_fugitive')?fugitive#statusline():''} " ステータス行にブランチを表示
 """"""""""""""""""""""""""""""
 " deoplete.nvim オプション
 let g:deoplete#enable_at_startup = 1 " 自動有効
@@ -202,4 +198,3 @@ endif
 
 " filetypeの自動検出(最後の方に書いた方がいいらしい)
 filetype on
-
