@@ -99,7 +99,7 @@ set title " タイトルバーにファイルのパス情報等を表示
 set display=uhex " 印字不可能文字を16進数で表示
 set lazyredraw " コマンド実行中は再描画しない
 
-" ステータスライン表示
+" ステータスライン表示 http://blog.ruedap.com/2011/07/12/vim-statusline-git-branch-name
 set statusline=%F " ファイル名表示
 set statusline+=%m " 変更チェック表示
 set statusline+=%r " 読み込み専用かどうか表示
