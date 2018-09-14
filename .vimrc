@@ -62,14 +62,7 @@ let g:indent_guides_exclude_filetypes = ['help', 'nerdtree', 'tagbar', 'unite']
 inoremap <buffer> <expr> = smartchr#loop(' = ', '=') " =キートグル
 """"""""""""""""""""""""""""""
 " vim-fugitive オプション
-nnoremap [fugitive]  <Nop>
-nmap <space>g [fugitive]
-nnoremap <silent> [fugitive]s :Gstatus<CR><C-w>T " ノーマル:g+sでgit status をサブウィンドウで開く
-nnoremap <silent> [fugitive]a :Gwrite<CR> " ノーマル:g+aでgit add
-nnoremap <silent> [fugitive]c :Gcommit-v-m<CR> " ノーマル:g+cでgit commit -v -m
-nnoremap <silent> [fugitive]b :Gblame<CR> " ノーマル:g+bでgit blame
-nnoremap <silent> [fugitive]d :Gdiff<CR> " ノーマル:g+dでgit diff
-nnoremap <silent> [fugitive]m :Gmerge<CR> " ノーマル:g+mでgit merge
+
 """"""""""""""""""""""""""""""
 " deoplete.nvim オプション
 let g:deoplete#enable_at_startup = 1 " 自動有効
