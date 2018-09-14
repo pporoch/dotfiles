@@ -62,7 +62,14 @@ let g:indent_guides_exclude_filetypes = ['help', 'nerdtree', 'tagbar', 'unite']
 inoremap <buffer> <expr> = smartchr#loop(' = ', '=') " =キートグル
 """"""""""""""""""""""""""""""
 " vim-fugitive オプション
-set statusline+=%{exists('g:loaded_fugitive')?fugitive#statusline():''} " ステータス行にブランチを表示
+nnoremap [fugitive]  <Nop>
+nmap <space>g [fugitive]
+nnoremap <silent> [fugitive]s :Gstatus<CR><C-w>T " ノーマル:g+sでgit status をサブウィンドウで開く
+nnoremap <silent> [fugitive]a :Gwrite<CR> " ノーマル:g+aでgit add
+nnoremap <silent> [fugitive]c :Gcommit-v-m<CR> " ノーマル:g+cでgit commit -v -m
+nnoremap <silent> [fugitive]b :Gblame<CR> " ノーマル:g+bでgit blame
+nnoremap <silent> [fugitive]d :Gdiff<CR> " ノーマル:g+dでgit diff
+nnoremap <silent> [fugitive]m :Gmerge<CR> " ノーマル:g+mでgit merge
 """"""""""""""""""""""""""""""
 " deoplete.nvim オプション
 let g:deoplete#enable_at_startup = 1 " 自動有効
@@ -102,6 +109,32 @@ set statusline+=%= " これ以降は右寄せ表示
 set statusline+=[ENC=%{&fileencoding}] " ファイルエンコードを表示
 set statusline+=[LOW=%l/%L] " 現在行数と全行数を表示
 set laststatus=2 " エディタウィンドウの末尾から2行目にステータスラインを常時表示
+
+  set statusline=%< " 行が長すぎるときに切り詰める位置
+  set statusline+=[%n] " バッファ番号
+  set statusline+=%m " %m 修正フラグ
+  set statusline+=%r " %r 読み込み専用フラグ
+  set statusline+=%h " %h ヘルプバッファフラグ
+  set statusline+=%w " %w プレビューウィンドウフラグ
+  set statusline+=%{'['.(&fenc!=''?&fenc:&enc).':'.&ff.']'} " fencとffを表示
+  set statusline+=%y " バッファ内のファイルのタイプ
+  set statusline+=\ " 空白スペース
+if winwidth(0) >= 130
+  set statusline+=%F " バッファ内のファイルのフルパス
+else
+  set statusline+=%t " ファイル名のみ
+endif
+  set statusline+=%= " 左寄せ項目と右寄せ項目の区切り
+  set statusline+=%{fugitive#statusline()} " Gitのブランチ名を表示
+  set statusline+=\ \ " 空白スペース2個
+  set statusline+=%1l " 何行目にカーソルがあるか
+  set statusline+=/
+  set statusline+=%L " バッファ内の総行数
+  set statusline+=,
+  set statusline+=%c " 何列目にカーソルがあるか
+  set statusline+=%V " 画面上の何列目にカーソルがあるか
+  set statusline+=\ \ " 空白スペース2個
+  set statusline+=%P " ファイル内の何％の位置にあるか
 
 " カーソル設定
 set whichwrap=b,s,h,l,<,>,[,] " カーソル移動で行末から次の行頭への移動が可能
